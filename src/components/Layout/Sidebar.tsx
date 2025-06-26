@@ -45,8 +45,8 @@ export default function Sidebar() {
         <Box bg={'#FFFFFF'} flex={0.15} py={'12px'}>
             <Container>
                 <Stack gap={'8px'}>
-                    {navLinks.map((datalink) => (
-                        <NavLink datalink={datalink} />
+                    {navLinks.map((datalink, index) => (
+                        <NavLink datalink={datalink} key={index} />
                     ))}
                 </Stack>
             </Container>
