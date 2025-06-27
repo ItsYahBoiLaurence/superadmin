@@ -1,17 +1,18 @@
-import { Avatar, Card, Center, Container, Group, SimpleGrid, Spinner, Stack } from "@chakra-ui/react";
+import { Avatar, Card, Container, Group, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import api from "../../api";
 import type { Company } from "../../types/company";
 import { FormatDate } from "../../utils/date-formatter";
 import ButtonCompany from '../custom/Drawer/CompanyCreateDrawer'
+import Loader from "../custom/Loader/Loading";
 
 const ClientCard = () => {
 
     const { data } = useQuery<Company[]>({
         queryKey: ['companies'],
         queryFn: async () => {
-            const res = await api.get('/mayan-admin')
+            const res = await api.get('/mayan-admin/company')
             return res.data
         },
     })
@@ -47,7 +48,7 @@ export default function Clients() {
                 <Group justify={'end'} w={"full"}>
                     <ButtonCompany />
                 </Group>
-                <Suspense fallback={<Center w={'100%'} h="100%"><Spinner color="teal.500" size="lg" /></Center>}>
+                <Suspense fallback={<Loader />}>
                     <ClientCard />
                 </Suspense>
             </Stack>

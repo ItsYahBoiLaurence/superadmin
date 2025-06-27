@@ -1,7 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import Clients from "./components/custom/Clients";
-import Users from "./components/custom/Users";
+import Clients from "./components/pages/Clients";
+import Users from "./components/pages/Users";
 
 export default function Routes() {
     return useRoutes([
