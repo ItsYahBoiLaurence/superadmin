@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, For, Group, Stack, Table, Text } from "@chakra-ui/react";
+import { Avatar, Box, Container, For, Group, Stack, Table, Text } from "@chakra-ui/react";
 import { colors } from "../../constants/colors";
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useQuery } from "@tanstack/react-query";

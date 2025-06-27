@@ -1,5 +1,5 @@
 import { useRoutes } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
+import Layout from "./components/layout/Layout";
 import Clients from "./components/pages/Clients";
 import Users from "./components/pages/Users";
 
