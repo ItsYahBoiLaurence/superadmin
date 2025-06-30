@@ -2,24 +2,40 @@ import { Button, CloseButton, Drawer, Field, Input, Portal, Stack } from "@chakr
 import { useState } from "react";
 import { colors } from "../../../constants/colors";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { BaseCompanyForm } from "../../../types/forms/Company";
+import type { BaseCompanyForm, FormCompanyError } from "../../../types/forms/Company";
+import api from "../../../api";
+import { AxiosError } from "axios";
+import { queryClient } from "../../../queryClient";
 
 export default function CompanyDrawer() {
     const [open, setOpen] = useState(false);
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        reset
+        formState: { errors, isSubmitting, isSubmitSuccessful },
+        reset,
+        setError
     } = useForm<BaseCompanyForm>({
         defaultValues: {
             company: ""
         }
     });
 
-    const onsubmit: SubmitHandler<BaseCompanyForm> = (data) => {
-        console.log(data)
-        reset();
+    const onsubmit: SubmitHandler<BaseCompanyForm> = async (data) => {
+        try {
+            const res = await api.post('/mayan-admin/create-company', data)
+            console.log(res.data)
+            reset();
+            queryClient.invalidateQueries({ queryKey: ['companies'], exact: true })
+        } catch (error) {
+            const err = error as AxiosError
+            const data = err.response?.data as FormCompanyError
+            setError('company', {
+                type: "manual",
+                message: data.message,
+            })
+        }
     };
 
     return (
@@ -43,6 +59,7 @@ export default function CompanyDrawer() {
                                         placeholder="Enter text here..."
                                     />
                                     {errors.company && <Field.ErrorText>{errors.company.message}</Field.ErrorText>}
+                                    {(isSubmitSuccessful && !errors.company) && <Field.HelperText color="green.500">Added Successfully!</Field.HelperText>}
                                 </Field.Root>
                             </form>
                         </Drawer.Body>
@@ -53,6 +70,7 @@ export default function CompanyDrawer() {
                                     bg={colors.primary}
                                     color={colors.light}
                                     onClick={handleSubmit(onsubmit)}
+                                    loading={isSubmitting}
                                 >
                                     Save
                                 </Button>
