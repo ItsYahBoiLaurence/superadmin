@@ -22,8 +22,6 @@ const AdminTable = () => {
         }
     })
 
-    console.log(data)
-
     return (
         <Box>
             <Table.ScrollArea rounded="md" height="550px">
@@ -67,19 +65,31 @@ const AdminTable = () => {
     )
 }
 
+const WrappedComponent = () => {
+    const { data } = useQuery({
+        queryKey: ['companyData'],
+        queryFn: async () => {
+            const res = await api.get('/mayan-admin/company')
+            return res.data.map((item: { name: string }) => item.name)
+        },
+    })
+    return (
+        <AdminUserCreateDrawer companyData={data} />
+    )
+}
+
 export default function Users() {
     return (
-        <Container py={'12px'}>
-            <Stack gap={'12px'}>
-                <Group justify={'space-between'} w={'full'} bg={colors.light} py={'12px'} px={'20px'} borderRadius={'8px'}>
-                    <Text color={colors.primary} fontWeight={'700'} textStyle={'lg'} >User Management</Text>
-                    {/* <Button bg={colors.primary} color={colors.light} borderRadius={'20px'}>+Add</Button> */}
-                    <AdminUserCreateDrawer />
-                </Group>
-                <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader />}>
+            <Container py={'12px'}>
+                <Stack gap={'12px'}>
+                    <Group justify={'space-between'} w={'full'} bg={colors.light} py={'12px'} px={'20px'} borderRadius={'8px'}>
+                        <Text color={colors.primary} fontWeight={'700'} textStyle={'lg'} >User Management</Text>
+                        <WrappedComponent />
+                    </Group>
                     <AdminTable />
-                </Suspense>
-            </Stack>
-        </Container >
+                </Stack>
+            </Container >
+        </Suspense>
     )
 }

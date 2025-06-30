@@ -3,4 +3,5 @@ export interface AdminUserForm {
     last_name: string
     email: string
     company: string
+    department: string
 }

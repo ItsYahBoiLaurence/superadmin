@@ -1,30 +1,52 @@
-import { Button, CloseButton, Drawer, Field, Input, Portal, Stack } from "@chakra-ui/react";
+import { Button, CloseButton, Drawer, Field, Input, NativeSelect, Portal, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 import { colors } from "../../../constants/colors";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { AdminUserForm } from "../../../types/forms/AdminUsers";
+import { useQuery } from "@tanstack/react-query";
+import api from "../../../api";
 
-export default function AdminUserCreateDrawer() {
+export default function AdminUserCreateDrawer({ companyData }: { companyData: [] }) {
     const [open, setOpen] = useState(false);
+
+    const onsubmit: SubmitHandler<AdminUserForm> = async (data) => {
+        console.log(data)
+        try {
+            const res = await api.post('/mayan-admin/inviteAdmin', data)
+            reset()
+            return res.data
+        } catch (error) {
+            console.log(error)
+        }
+        reset();
+    };
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        reset
+        formState: { errors, isSubmitSuccessful, isSubmitting },
+        reset,
+        watch
     } = useForm<AdminUserForm>({
         defaultValues: {
             first_name: "",
             last_name: "",
             email: "",
-            company: ""
+            company: "",
+            department: ""
         }
     });
 
-    const onsubmit: SubmitHandler<AdminUserForm> = (data) => {
-        console.log(data)
-        reset();
-    };
+    const selectedCompany = watch('company')
 
+    const { data } = useQuery<string[]>({
+        queryKey: ['departmentData', selectedCompany],
+        queryFn: async () => {
+            const res = await api.get(`/mayan-admin/department?company=${selectedCompany}`)
+            return res.data
+        },
+        enabled: !!selectedCompany
+    })
 
     return (
         <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
@@ -69,12 +91,35 @@ export default function AdminUserCreateDrawer() {
                                     </Field.Root>
 
                                     <Field.Root invalid={!!errors.company}>
-                                        <Field.Label>Company Name</Field.Label>
-                                        <Input
-                                            {...register("company", { required: "Company Name is required" })}
-                                            placeholder="Enter text here..."
-                                        />
+                                        <Field.Label>Company</Field.Label>
+                                        <NativeSelect.Root>
+                                            <NativeSelect.Field
+                                                {...register("company", { required: "Company Name is required" })}
+                                                placeholder="Select option"
+                                            >
+                                                {companyData.map((item, index) => (
+                                                    <option key={index} value={item}>{item}</option>
+                                                ))}
+                                            </NativeSelect.Field>
+                                            <NativeSelect.Indicator />
+                                        </NativeSelect.Root>
                                         {errors.company && <Field.ErrorText>{errors.company.message}</Field.ErrorText>}
+                                    </Field.Root>
+                                    <Field.Root disabled={data!.length > 0 ? false : true} invalid={!!errors.department}>
+                                        <Field.Label>Department</Field.Label>
+                                        <NativeSelect.Root>
+                                            <NativeSelect.Field
+                                                {...register("department", { required: "Department Name is required" })}
+                                                placeholder="Select option"
+                                            >
+                                                {data!.map((item, index) => (
+                                                    <option key={index} value={item}>{item}</option>
+                                                ))}
+                                            </NativeSelect.Field>
+                                            <NativeSelect.Indicator />
+                                        </NativeSelect.Root>
+                                        {errors.department && <Field.ErrorText>{errors.department.message}</Field.ErrorText>}
+                                        {(isSubmitSuccessful) && <Field.HelperText color="green.500">Invited Successfully!</Field.HelperText>}
                                     </Field.Root>
                                 </Stack>
                             </form>
@@ -86,6 +131,7 @@ export default function AdminUserCreateDrawer() {
                                     bg={colors.primary}
                                     color={colors.light}
                                     onClick={handleSubmit(onsubmit)}
+                                    loading={isSubmitting}
                                 >
                                     Save
                                 </Button>

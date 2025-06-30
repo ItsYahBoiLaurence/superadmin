@@ -3,6 +3,6 @@ import { colors } from "../../../constants/colors";
 
 export default function Loader() {
     return (
-        <Center w={'100%'} h="100%"><Spinner color={colors.primary} size="lg" /></Center>
+        <Center w={'100%'} h="100%" pos={'relative'}><Spinner color={colors.primary} size="lg" /></Center>
     )
 }
