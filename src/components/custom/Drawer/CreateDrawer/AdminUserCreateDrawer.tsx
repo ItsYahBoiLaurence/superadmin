@@ -1,10 +1,11 @@
 import { Button, CloseButton, Drawer, Field, Input, NativeSelect, Portal, Stack } from "@chakra-ui/react";
 import { useState } from "react";
-import { colors } from "../../../constants/colors";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { AdminUserForm } from "../../../types/forms/AdminUsers";
-import { useQuery } from "@tanstack/react-query";
-import api from "../../../api";
+import { useQuery } from "react-query";
+import api from "../../../../api";
+import type { AdminUserForm } from "../../../../types/forms/AdminUsers";
+import { colors } from "../../../../constants/colors";
+
 
 export default function AdminUserCreateDrawer({ companyData }: { companyData: [] }) {
     const [open, setOpen] = useState(false);
@@ -58,7 +59,7 @@ export default function AdminUserCreateDrawer({ companyData }: { companyData: []
                 <Drawer.Positioner>
                     <Drawer.Content>
                         <Drawer.Header bg={colors.primary}>
-                            <Drawer.Title>Add new Admin User</Drawer.Title>
+                            <Drawer.Title color={colors.light}>Add new Admin User</Drawer.Title>
                         </Drawer.Header>
                         <Drawer.Body bg={colors.light} color={colors.dark}>
                             <form onSubmit={handleSubmit(onsubmit)}>
@@ -105,14 +106,14 @@ export default function AdminUserCreateDrawer({ companyData }: { companyData: []
                                         </NativeSelect.Root>
                                         {errors.company && <Field.ErrorText>{errors.company.message}</Field.ErrorText>}
                                     </Field.Root>
-                                    <Field.Root disabled={data!.length > 0 ? false : true} invalid={!!errors.department}>
+                                    {<Field.Root invalid={!!errors.department} disabled={data == null}>
                                         <Field.Label>Department</Field.Label>
                                         <NativeSelect.Root>
                                             <NativeSelect.Field
                                                 {...register("department", { required: "Department Name is required" })}
                                                 placeholder="Select option"
                                             >
-                                                {data!.map((item, index) => (
+                                                {data && data.map((item, index) => (
                                                     <option key={index} value={item}>{item}</option>
                                                 ))}
                                             </NativeSelect.Field>
@@ -121,6 +122,7 @@ export default function AdminUserCreateDrawer({ companyData }: { companyData: []
                                         {errors.department && <Field.ErrorText>{errors.department.message}</Field.ErrorText>}
                                         {(isSubmitSuccessful) && <Field.HelperText color="green.500">Invited Successfully!</Field.HelperText>}
                                     </Field.Root>
+                                    }
                                 </Stack>
                             </form>
                         </Drawer.Body>

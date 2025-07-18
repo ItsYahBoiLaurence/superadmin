@@ -1,11 +1,12 @@
-import { Avatar, Card, Container, Group, SimpleGrid, Stack } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { Avatar, Box, Card, Container, Group, SimpleGrid, Stack } from "@chakra-ui/react";
+import { useQuery } from "react-query";
 import { Suspense } from "react";
 import api from "../../api";
 import type { Company } from "../../types/company";
 import { FormatDate } from "../../utils/date-formatter";
-import ButtonCompany from '../custom/Drawer/CompanyCreateDrawer'
+import ButtonCompany from '../custom/Drawer/CreateDrawer/CompanyCreateDrawer'
 import Loader from "../custom/Loader/Loading";
+import CompanyMenu from "../custom/Modal/Company/CompanyMenu";
 
 const ClientCard = () => {
 
@@ -17,10 +18,15 @@ const ClientCard = () => {
         },
     })
 
+    console.log(data)
+
     return (
         <SimpleGrid overflow={'auto'} maxH="calc(100vh - 200px)" columns={3} w={'full'} columnGap="4" rowGap="4">
-            {data!.map(({ name, date_created, employee_count }, index) => (
+            {data!.map(({ id, name, date_created, employee_count }, index) => (
                 <Card.Root key={index} bg={'white'} border={'none'}>
+                    <Box display={'flex'} justifyContent={'end'} alignItems={'end'} paddingTop={'2'} paddingRight={'2'}>
+                        <CompanyMenu id={id} />
+                    </Box>
                     <Card.Body gap="2" textAlign={'center'}>
                         <Avatar.Root size="2xl" shape="rounded" mx={'auto'}>
                             <Avatar.Fallback name={name} />
@@ -34,12 +40,11 @@ const ClientCard = () => {
                         </Card.Description>
                     </Card.Body>
                 </Card.Root>
-            ))}
-        </SimpleGrid>
+            ))
+            }
+        </SimpleGrid >
     )
 }
-
-
 
 export default function Clients() {
     return (

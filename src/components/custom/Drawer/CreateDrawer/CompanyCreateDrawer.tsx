@@ -1,11 +1,11 @@
 import { Button, CloseButton, Drawer, Field, Input, Portal, Stack } from "@chakra-ui/react";
 import { useState } from "react";
-import { colors } from "../../../constants/colors";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { BaseCompanyForm, FormCompanyError } from "../../../types/forms/Company";
-import api from "../../../api";
 import { AxiosError } from "axios";
-import { queryClient } from "../../../queryClient";
+import api from "../../../../api";
+import { queryClient } from "../../../../queryClient";
+import { colors } from "../../../../constants/colors";
+import type { BaseCompanyForm, FormCompanyError } from "../../../../types/forms/Company";
 
 export default function CompanyDrawer() {
     const [open, setOpen] = useState(false);
@@ -41,14 +41,14 @@ export default function CompanyDrawer() {
     return (
         <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
             <Drawer.Trigger asChild>
-                <Button borderRadius={'4xl'} bg={colors.primary} color={colors.light}>+Add Company</Button>
+                <Button borderRadius={'4xl'} bg={colors.primary} color={'white'}>+Add Company</Button>
             </Drawer.Trigger>
             <Portal>
                 <Drawer.Backdrop />
                 <Drawer.Positioner>
                     <Drawer.Content>
                         <Drawer.Header bg={colors.primary}>
-                            <Drawer.Title>Add New Company</Drawer.Title>
+                            <Drawer.Title color={colors.light}>Add New Company</Drawer.Title>
                         </Drawer.Header>
                         <Drawer.Body bg={colors.light} color={colors.dark}>
                             <form onSubmit={handleSubmit(onsubmit)}>
@@ -78,7 +78,7 @@ export default function CompanyDrawer() {
                             </Stack>
                         </Drawer.Footer>
                         <Drawer.CloseTrigger asChild>
-                            <CloseButton size="sm" />
+                            <CloseButton color={colors.light} size="sm" />
                         </Drawer.CloseTrigger>
                     </Drawer.Content>
                 </Drawer.Positioner>

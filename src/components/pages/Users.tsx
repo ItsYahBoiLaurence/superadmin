@@ -1,12 +1,12 @@
 import { Avatar, Box, Container, For, Group, Stack, Table, Text } from "@chakra-ui/react";
 import { colors } from "../../constants/colors";
 import { IconPencil, IconTrash } from '@tabler/icons-react';
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "react-query";
 import api from "../../api";
 import type { AdminUsers } from "../../types/admin-users";
 import { Suspense } from "react";
 import Loader from "../custom/Loader/Loading";
-import AdminUserCreateDrawer from "../custom/Drawer/AdminUserCreateDrawer";
+import AdminUserCreateDrawer from "../custom/Drawer/CreateDrawer/AdminUserCreateDrawer";
 
 const tableHeader = [
     'Name', 'Company', 'Actions'

@@ -2,6 +2,7 @@ import { useRoutes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Clients from "./components/pages/Clients";
 import Users from "./components/pages/Users";
+import SignIn from "./components/pages/SignIn";
 
 export default function Routes() {
     return useRoutes([
@@ -22,5 +23,9 @@ export default function Routes() {
                 },
             ],
         },
+        {
+            path: '/sign-in',
+            element: <SignIn />
+        }
     ]);
 }

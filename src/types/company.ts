@@ -3,6 +3,7 @@ export interface BaseCompany {
 }
 
 export interface Company extends BaseCompany {
+    id: string
     date_created: string
     employee_count: number
 }
