@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Menu, Portal } from "@chakra-ui/react";
+import { Button, Flex, Image } from "@chakra-ui/react";
 import Logo from '../../assets/logo.svg'
 import { IconLogout } from '@tabler/icons-react';
 import { useContext } from "react";

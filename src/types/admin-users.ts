@@ -1,5 +1,3 @@
-import type { AccessTokenQueryType } from "./payload"
-
 export interface AdminUsers {
     first_name: string
     last_name: string
