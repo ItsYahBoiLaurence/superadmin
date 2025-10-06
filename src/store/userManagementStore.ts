@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import type { AdminUsers } from "../types/admin-users";
+import api from "../api";
+import { queryClient } from "../queryClient";
 
 export type UserManagementState = {
     adminUsers: AdminUsers[]
@@ -12,6 +14,7 @@ export type UserManagementActions = {
     deleteUserAction: (user: AdminUsers) => Promise<void>
     openSideBarAction: (user: AdminUsers) => void
     toggle: () => void
+    updateUser: (payload: AdminUsers) => Promise<void>
 }
 
 export type UserManagementType = UserManagementState & UserManagementActions
@@ -22,6 +25,7 @@ export const UserManagementStore = create<UserManagementType>(
         adminUsers: [],
         openSideBar: false,
         currentUserToEdit: {
+            id: "",
             email: "",
             department: {
                 company_id: ""
@@ -31,6 +35,7 @@ export const UserManagementStore = create<UserManagementType>(
         },
 
         openSideBarAction: (user: AdminUsers) => {
+            console.log(user)
             set({
                 openSideBar: true,
             })
@@ -51,6 +56,18 @@ export const UserManagementStore = create<UserManagementType>(
             set({
                 adminUsers: users
             })
+        },
+
+        updateUser: async (payload: AdminUsers) => {
+            try {
+                const { id, department, ...data } = payload
+                console.log("Updated")
+                const res = await api.patch(`/mayan-admin/updateUser?id=${id}`, data)
+                queryClient.invalidateQueries({ queryKey: 'admin-users' })
+                console.log(res.data)
+            } catch (error) {
+                throw error
+            }
         }
     })
 ) 

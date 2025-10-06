@@ -18,6 +18,7 @@ const AdminTable = () => {
 
     const { data } = useUserManagement()
     const openSideBarAction = UserManagementStore(state => state.openSideBarAction)
+    console.log(data)
 
     return (
         <Box>
@@ -33,7 +34,7 @@ const AdminTable = () => {
                     </Table.Header>
                     <Table.Body bg={colors.light}>
                         <For each={data} >
-                            {({ first_name, email, department, last_name }, index) => (
+                            {({ id, first_name, email, department, last_name }, index) => (
                                 <Table.Row key={index} bg={colors.light} color={colors.primary}>
                                     <Table.Cell border={'none'}>
                                         <Group gap={'12px'}>
@@ -49,7 +50,7 @@ const AdminTable = () => {
                                     <Table.Cell border={'none'} textStyle={'sm'}>{department.company_id}</Table.Cell>
                                     <Table.Cell border={'none'}>
                                         <Group gap={'12px'}>
-                                            <IconPencil onClick={() => openSideBarAction({ first_name, email, department, last_name })} />
+                                            <IconPencil onClick={() => openSideBarAction({ id, first_name, email, department, last_name })} />
                                         </Group>
                                     </Table.Cell>
                                 </Table.Row>
