@@ -18,7 +18,7 @@ export type UserManagementType = UserManagementState & UserManagementActions
 
 
 export const UserManagementStore = create<UserManagementType>(
-    (set, get) => ({
+    (set) => ({
         adminUsers: [],
         openSideBar: false,
         currentUserToEdit: {
@@ -44,7 +44,7 @@ export const UserManagementStore = create<UserManagementType>(
         },
 
         deleteUserAction: async (user: AdminUsers) => {
-            console.log("User deleted")
+            console.log(`${user}`)
         },
 
         setAdminUsers: async (users) => {

@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, Drawer, Field, Flex, Input, Portal } from "@chakra-ui/react";
+import { Button, CloseButton, Drawer, Field, Flex, Input, Portal } from "@chakra-ui/react";
 import { UserManagementStore } from "../../../../store";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";

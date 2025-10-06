@@ -1,6 +1,6 @@
 import { Avatar, Box, Container, For, Group, Stack, Table, Text } from "@chakra-ui/react";
 import { colors } from "../../constants/colors";
-import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconPencil } from '@tabler/icons-react';
 import { useQuery } from "react-query";
 import api from "../../api";
 import { Suspense } from "react";
