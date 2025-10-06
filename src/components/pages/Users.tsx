@@ -3,10 +3,12 @@ import { colors } from "../../constants/colors";
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useQuery } from "react-query";
 import api from "../../api";
-import type { AdminUsers } from "../../types/admin-users";
 import { Suspense } from "react";
 import Loader from "../custom/Loader/Loading";
 import AdminUserCreateDrawer from "../custom/Drawer/CreateDrawer/AdminUserCreateDrawer";
+import useUserManagement from "../../hooks/useUserManagement";
+import AdminUserUpdateDrawer from "../custom/Drawer/UpdateDrawer/AdminUserUpdateDrawer";
+import { UserManagementStore } from "../../store";
 
 const tableHeader = [
     'Name', 'Company', 'Actions'
@@ -14,16 +16,12 @@ const tableHeader = [
 
 const AdminTable = () => {
 
-    const { data } = useQuery<AdminUsers[]>({
-        queryKey: ['admin-users'],
-        queryFn: async () => {
-            const res = await api.get('/mayan-admin/admin-users')
-            return res.data
-        }
-    })
+    const { data } = useUserManagement()
+    const openSideBarAction = UserManagementStore(state => state.openSideBarAction)
 
     return (
         <Box>
+            <AdminUserUpdateDrawer />
             <Table.ScrollArea rounded="md" height="550px">
                 <Table.Root size="lg" stickyHeader >
                     <Table.Header >
@@ -51,8 +49,7 @@ const AdminTable = () => {
                                     <Table.Cell border={'none'} textStyle={'sm'}>{department.company_id}</Table.Cell>
                                     <Table.Cell border={'none'}>
                                         <Group gap={'12px'}>
-                                            <IconPencil onClick={() => console.log('Edit')} />
-                                            <IconTrash onClick={() => console.log('Delete')} />
+                                            <IconPencil onClick={() => openSideBarAction({ first_name, email, department, last_name })} />
                                         </Group>
                                     </Table.Cell>
                                 </Table.Row>
