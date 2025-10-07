@@ -8,7 +8,7 @@ export default function AdminUserUpdateDrawer() {
 
     const currentUserToEdit = UserManagementStore(state => state.currentUserToEdit)
     const { openSideBar, toggle, updateUser } = UserManagementStore()
-    const { register, handleSubmit, reset, formState: { isLoading } } = useForm({
+    const { register, handleSubmit, reset } = useForm({
         defaultValues: {
             id: "",
             email: "",
