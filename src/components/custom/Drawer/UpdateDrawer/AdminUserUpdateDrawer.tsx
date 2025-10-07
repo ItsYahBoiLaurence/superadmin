@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, Drawer, Field, Flex, Input, Portal } from "@chakra-ui/react";
+import { Button, CloseButton, Drawer, Field, Flex, Input, Portal } from "@chakra-ui/react";
 import { UserManagementStore } from "../../../../store";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
@@ -7,9 +7,10 @@ import type { AdminUsers } from "../../../../types/admin-users";
 export default function AdminUserUpdateDrawer() {
 
     const currentUserToEdit = UserManagementStore(state => state.currentUserToEdit)
-    const { openSideBar, toggle } = UserManagementStore()
-    const { register, handleSubmit, reset } = useForm({
+    const { openSideBar, toggle, updateUser } = UserManagementStore()
+    const { register, handleSubmit, reset, formState: { isLoading } } = useForm({
         defaultValues: {
+            id: "",
             email: "",
             first_name: "",
             last_name: "",
@@ -21,6 +22,7 @@ export default function AdminUserUpdateDrawer() {
 
     useEffect(() => {
         if (currentUserToEdit) reset({
+            id: currentUserToEdit.id,
             email: currentUserToEdit.email,
             department: {
                 company_id: currentUserToEdit.department.company_id
@@ -31,7 +33,8 @@ export default function AdminUserUpdateDrawer() {
     }, [currentUserToEdit, reset])
 
     function submit(data: AdminUsers) {
-        console.log(data)
+        updateUser(data)
+        toggle()
     }
 
     return (
