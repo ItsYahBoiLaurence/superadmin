@@ -29,9 +29,6 @@ export default function CompanyMenu({ id }: { id: string }) {
                 <Portal>
                     <Menu.Positioner>
                         <Menu.Content>
-                            <Menu.Item value="new-txt">
-                                Edit
-                            </Menu.Item>
                             <Menu.Item value="new-file" color={'red'} onClick={() => deleteCompany(id)}>Delete</Menu.Item>
                         </Menu.Content>
                     </Menu.Positioner>
